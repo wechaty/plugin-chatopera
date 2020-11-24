@@ -11,9 +11,8 @@ import {
 
 import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod'
 
-
 function onLogin (user: Contact) {
-    console.log(user)
+  log.info('Login %s', user)
 }
 
 function onLogout (user: Contact) {
@@ -26,7 +25,6 @@ async function onMessage (msg: Message) {
     await msg.say('dong')
   }
 }
-process.env['WECHATY_PUPPET_HOSTIE_TOKEN'] = 'puppet_donut_ffb8809cdee97035'
 
 const bot = new Wechaty({
   name: 'ding-dong-bot',
@@ -52,8 +50,8 @@ const bot = new Wechaty({
 })
 
 const chatoperaConfig: WechatyChatoperaConfig = {
-    clientId: "5fbcb0afcad362001b4e3b12",
-    secret: "c03e26976ac9aed372953b48f55d09f9",
+  clientId: '5fbcb0afcad362001b4e3b12',
+  secret  : 'c03e26976ac9aed372953b48f55d09f9',
 }
 
 bot.use(WechatyChatopera(chatoperaConfig))

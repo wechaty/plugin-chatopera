@@ -125,7 +125,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
        */
       log.info(`getting chatopera answer:${JSON.stringify(response)}`)
       let answer: string = ''
-      
+
       if (!response.logic_is_fallback) {
         answer = response.string
       }

@@ -2,7 +2,7 @@ import { WechatyChatoperaConfig }  from './plugin'
 import {
   ChatoperaOptions,
   DEFAULT_BESTSCORE_THRESHOLD,
-  DEFAULT_SUGGSCORE_THRESHOLD
+  DEFAULT_SUGGSCORE_THRESHOLD,
 }                                 from './chatopera'
 
 function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
@@ -26,7 +26,7 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
   if (!bestScoreThreshold) {
     const threshold = process.env[WECHATY_PLUGIN_CHATOPERA_BESTSCORE_THRESHOLD]
     if (threshold) {
-      bestScoreThreshold = parseFloat(threshold)  
+      bestScoreThreshold = parseFloat(threshold)
     } else {
       bestScoreThreshold = DEFAULT_BESTSCORE_THRESHOLD
     }
@@ -58,11 +58,11 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
   }
 
   return {
-    clientId,
-    secret,
     bestScoreThreshold,
-    suggScoreThreshold,
+    clientId,
     language,
+    secret,
+    suggScoreThreshold,
   }
 
 }

@@ -1,11 +1,10 @@
-
 import { log }  from 'wechaty'
-import { 
+import {
   ChatoperaOptions,
   ChatoperaResponse,
 }               from './chatopera'
 
-const Chatbot = require("@chatopera/sdk").Chatbot;
+const Chatbot = require('@chatopera/sdk').Chatbot
 
 function asker (options: ChatoperaOptions) {
   log.verbose('WechatyChatopera', 'asker(%s)', JSON.stringify(options))
@@ -14,19 +13,19 @@ function asker (options: ChatoperaOptions) {
 
   return async function ask (
     question: string,
-    userId  : string,
+    contactId  : string,
     roomId? : string,
   ): Promise<ChatoperaResponse> {
-    log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, userId, roomId)
-    
+    log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, roomId)
+
     if (roomId) {
-      userId = `${userId}-${roomId}`
+      contactId = `${contactId}-${roomId}`
     }
     const cmdRes = await chatbot.command('POST', '/conversation/query', {
-      textMessage          : question,
-      fromUserId           : userId,
       faqBestReplyThreshold: options.bestScoreThreshold,
       faqSuggReplyThreshold: options.suggScoreThreshold,
+      fromUserId           : contactId,
+      textMessage          : question,
     })
     return cmdRes.data as ChatoperaResponse
   }

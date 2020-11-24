@@ -8,6 +8,7 @@ export interface ChatoperaOptions {
   language?         : matchers.LanguageMatcherOptions,
 }
 
+/* eslint-disable camelcase */
 export interface ChatoperaResponse {
   state              : string,
   string             : string,
@@ -34,5 +35,5 @@ const DEFAULT_SUGGSCORE_THRESHOLD = 0.2
 
 export {
   DEFAULT_BESTSCORE_THRESHOLD,
-  DEFAULT_SUGGSCORE_THRESHOLD
+  DEFAULT_SUGGSCORE_THRESHOLD,
 }
