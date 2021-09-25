@@ -1,3 +1,9 @@
+<div align=right>
+
+[Chatopera Home](https://bot.chatopera.com/)　|　[Chatopera Docs](https://docs.chatopera.com)　|　[Wechaty Docs](https://wechaty.js.org/)　|　[Help](https://github.com/wechaty/wechaty-chatopera/issues)
+
+</div>
+
 # WECHATY-CHATOPERA
 
 ## INTRODUCTION
@@ -115,10 +121,19 @@ Chatopera 机器人平台包括知识库、多轮对话、意图识别和语音�
 
 ## AUTHOR
 
-[吴京京](https://github.com/wj-Mcat), Author of Python-wechaty & NLP Researcher, \<wjmcater@gmail.com\>
+- [吴京京](https://github.com/wj-Mcat), Author of Python-wechaty & NLP Researcher, \<wjmcater@gmail.com\>
+- [Chatopera Developers](https://github.com/chatopera)
 
 ## COPYRIGHT & LICENSE
 
 - Code & Docs © 2020 wj-Mcat \<wjmcater@gmail.com\>
 - Code released under the Apache-2.0 License
 - Docs released under Creative Commons
+- Copyright (2021) <a href="https://www.chatopera.com/" target="_blank">北京华夏春松科技有限公司</a>
+
+[Apache License Version 2.0](./LICENSE)
+
+[![chatoper banner][co-banner-image]][co-url]
+
+[co-banner-image]: ./docs/assets/42383104-da925942-8168-11e8-8195-868d5fcec170.png
+[co-url]: https://www.chatopera.com

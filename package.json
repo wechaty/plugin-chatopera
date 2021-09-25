@@ -1,7 +1,7 @@
 {
   "name": "wechaty-chatopera",
   "version": "0.0.2",
-  "description": "Chatopera Plugin for Wechaty",
+  "description": "Chatopera Plugin for Wechaty, deliver chatbots in low-code way. <https://bot.chatopera.com>",
   "directories": {
     "doc": "docs",
     "example": "examples",
@@ -53,11 +53,19 @@
   "keywords": [
     "wechaty",
     "plugin",
-    "wechaty-plugin",
+    "chatbot",
     "chatopera",
-    "chatbot"
+    "聊天机器人",
+    "智能对话机器人"
   ],
   "author": "wj-Mat <wjmcater@gmail.com>",
+  "contributors": [
+    {
+      "name": "Chatopera Dev",
+      "email": "info@chatopera.com",
+      "url": "https://www.chatopera.com"
+    }
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/wechaty/wechaty-chatopera/issues"
