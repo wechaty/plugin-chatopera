@@ -15,8 +15,8 @@ Bring your bots into Wechat with Wechaty Chatopera Plugin.
 ## REQUIREMENTS
 
 1. Node.js v12+
-1. Wechaty v0.40+
-1. This Chatopera Plugin
+2. Wechaty v0.40+
+3. Chatopera Plugin
 
 ## USAGE
 
@@ -30,7 +30,7 @@ const config = {
    * Chatopera Service ID
    */
   clientId: "5fbcb0afcad362001b4e3b12",
-  secret: "c03e26976ac9aed372953b48f55d09f9",
+  secret: "YOUR_SECRET",
 };
 
 const ChatoperaPlugin = WechatyChatopera(config);
@@ -41,9 +41,7 @@ wechaty.use(ChatoperaPlugin);
 
 ### 1 Configure Chatopera
 
-[Chatopera 云服务](https://bot.chatopera.com)是一站式实现聊天机器人的云服务，按接口调用次数计费。Chatopera 云服务是 [Chatopera 机器人平台](https://docs.chatopera.com/products/chatbot-platform/index.html)的软件即服务实例。在云计算基础上，Chatopera 云服务属于**聊天机器人即服务**的云服务。
-
-Chatopera 机器人平台包括知识库、多轮对话、意图识别和语音识别等组件，标准化聊天机器人开发，支持企业 OA 智能问答、HR 智能问答、智能客服和网络营销等场景。企业 IT 部门、业务部门借助 Chatopera 云服务快速让聊天机器人上线！
+[Chatopera 云服务](https://bot.chatopera.com)是开发者友好的低代码上线智能对话机器人的云服务。
 
 <details>
 <summary>展开查看 Chatopera 云服务的产品截图</summary>
@@ -122,7 +120,7 @@ Chatopera 机器人平台包括知识库、多轮对话、意图识别和语音�
 ## AUTHOR
 
 - [吴京京](https://github.com/wj-Mcat), Author of Python-wechaty & NLP Researcher, \<wjmcater@gmail.com\>
-- [Chatopera Developers](https://github.com/chatopera)
+- [Chatopera Developers](https://github.com/chatopera), 低代码上线智能对话机器人 \<info@chatopera.com\>
 
 ## COPYRIGHT & LICENSE
 
