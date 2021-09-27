@@ -115,7 +115,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const from: Contact = message.talker()
       const room: Room = message.room()
 
-      const response: ChatoperaResponse = await ask(text, from.id, room?.id)
+      const response: ChatoperaResponse = await ask(text, from.id, await room?.topic())
       if (!response) {
         return
       }

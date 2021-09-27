@@ -14,12 +14,12 @@ function asker (options: ChatoperaOptions) {
   return async function ask (
     question: string,
     contactId  : string,
-    roomId? : string,
+    roomTopic? : string,
   ): Promise<ChatoperaResponse> {
-    log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, roomId)
+    log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, roomTopic)
 
-    if (roomId) {
-      contactId = `${contactId}-${roomId}`
+    if (roomTopic) {
+      contactId = `${roomTopic}`
     }
     const cmdRes = await chatbot.command('POST', '/conversation/query', {
       faqBestReplyThreshold: options.bestScoreThreshold,
