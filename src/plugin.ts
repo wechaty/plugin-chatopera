@@ -65,7 +65,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   }
 
   const isConfigMessage = async (message: Message): Promise<boolean> => {
-    const from = message.from()
+    const from = message.talker()
     const room = message.room()
 
     if (await matchSkipMessage(message))                  { return false }
@@ -112,7 +112,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const text = await message.mentionText()
       if (!text) { return }
 
-      const from: Contact = message.from()
+      const from: Contact = message.talker()
       const room: Room = message.room()
 
       const response: ChatoperaResponse = await ask(text, from.id, room?.id)
