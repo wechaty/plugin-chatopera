@@ -1,8 +1,12 @@
 import { matchers } from 'wechaty-plugin-contrib'
 
+export interface RepoConfig {
+  [fullName: string]: string | string[]
+}
+
 export interface ChatoperaOptions {
-  clientId          : string,
-  secret            : string,
+  clientId?          : string,
+  secret?            : string,
   bestScoreThreshold: number,
   suggScoreThreshold: number,
   language?         : matchers.LanguageMatcherOptions,

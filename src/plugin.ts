@@ -14,7 +14,7 @@ import { asker }            from './asker'
 import { normalizeConfig }  from './normalize-config'
 import { mentionMatcher }        from './mention-matcher'
 
-import { ChatoperaOptions, ChatoperaResponse } from './chatopera'
+import { RepoConfig, ChatoperaOptions, ChatoperaResponse } from './chatopera'
 
 interface WechatyChatoperaConfigMatcher {
   contact?        : matchers.ContactMatcherOptions,
@@ -23,14 +23,31 @@ interface WechatyChatoperaConfigMatcher {
   skipMessage?    : matchers.MessageMatcherOptions,
 }
 
-export type WechatyChatoperaConfig = WechatyChatoperaConfigMatcher & Partial<ChatoperaOptions>
+export type WechatyChatoperaConfig = WechatyChatoperaConfigMatcher &
+  Partial<ChatoperaOptions> & {
+    repoConfig?: RepoConfig;
+  };
 
 function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   log.verbose('WechatyChatopera', 'WechatyChatopera(%s)', JSON.stringify(config))
 
+  const roomIds: string[] = []
+  for (const fullName in config.repoConfig) {
+    const repoRoom: string | string[] = config.repoConfig[fullName]
+    if (Array.isArray(repoRoom)) {
+      roomIds.push(...repoRoom)
+    } else {
+      roomIds.push(repoRoom)
+    }
+  }
+
+  if (roomIds.length > 0) {
+    config.room = roomIds
+  }
+
   const normalizedConfig = normalizeConfig(config)
 
-  const ask = asker(normalizedConfig)
+  const ask = asker(normalizedConfig, config.repoConfig)
 
   const matchContact = typeof config.contact === 'undefined'
     ? () => true
@@ -115,7 +132,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const from: Contact = message.talker()
       const room: Room = message.room()
 
-      const response: ChatoperaResponse = await ask(text, from.id, await room?.topic())
+      const response: ChatoperaResponse = await ask(text, from.id, room)
       if (!response) {
         return
       }
