@@ -29,8 +29,10 @@ const config = {
   /**
    * Chatopera Service ID
    */
-  clientId: "5fbcb0afcad362001b4e3b12",
+  clientId: "YOUR_CLIENTID",
   secret: "YOUR_SECRET",
+  faqBestReplyThreshold: 0.8,
+  faqSuggReplyThreshold: 0.2
 };
 
 const ChatoperaPlugin = WechatyChatopera(config);

@@ -1,17 +1,17 @@
 import { WechatyChatoperaConfig }  from './plugin'
 import {
   ChatoperaOptions,
-  DEFAULT_BESTSCORE_THRESHOLD,
-  DEFAULT_SUGGSCORE_THRESHOLD,
+  DEFAULT_WCP_FAQ_BESTREPLY_THRES,
+  DEFAULT_WCP_FAQ_SUGGREPLY_THRES,
 }                                 from './chatopera'
 
 function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
 
-  const CHATOPERA_CLIENTID = 'CHATOPERA_CLIENTID'
-  const CHATOPERA_SECRET   = 'CHATOPERA_SECRET'
+  const WCP_DEFAULT_CLIENTID = 'WCP_DEFAULT_CLIENTID'
+  const WCP_DEFAULT_SECRET   = 'WCP_DEFAULT_SECRET'
 
-  const CHATOPERA_BESTSCORE_THRESHOLD   = 'CHATOPERA_BEST_REPLY_THRES'
-  const CHATOPERA_SUGGSCORE_THRESHOLD   = 'CHATOPERA_SUGG_REPLY_THRES'
+  const WCP_FAQ_BESTREPLY_THRES   = 'WCP_FAQ_BESTREPLY_THRES'
+  const WCP_FAQ_SUGGREPLY_THRES   = 'WCP_FAQ_SUGGREPLY_THRES'
 
   const WCP_PERSONAL_ACC_TOKEN = 'WCP_PERSONAL_ACC_TOKEN'
 
@@ -19,31 +19,31 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
 
   let clientId = config.clientId
   let secret   = config.secret
-  let bestScoreThreshold = config.bestScoreThreshold
-  let suggScoreThreshold = config.suggScoreThreshold
+  let faqBestReplyThreshold = config.faqBestReplyThreshold
+  let faqSuggReplyThreshold = config.faqSuggReplyThreshold
 
   if (!clientId) {
-    clientId = process.env[CHATOPERA_CLIENTID]
+    clientId = process.env[WCP_DEFAULT_CLIENTID]
   }
   if (!secret) {
-    secret = process.env[CHATOPERA_SECRET]
+    secret = process.env[WCP_DEFAULT_SECRET]
   }
 
-  if (!bestScoreThreshold) {
-    const threshold = process.env[CHATOPERA_BESTSCORE_THRESHOLD]
+  if (!faqBestReplyThreshold) {
+    const threshold = process.env[WCP_FAQ_BESTREPLY_THRES]
     if (threshold) {
-      bestScoreThreshold = parseFloat(threshold)
+      faqBestReplyThreshold = parseFloat(threshold)
     } else {
-      bestScoreThreshold = DEFAULT_BESTSCORE_THRESHOLD
+      faqBestReplyThreshold = DEFAULT_WCP_FAQ_BESTREPLY_THRES
     }
   }
 
-  if (!suggScoreThreshold) {
-    const threshold = process.env[CHATOPERA_SUGGSCORE_THRESHOLD]
+  if (!faqSuggReplyThreshold) {
+    const threshold = process.env[WCP_FAQ_SUGGREPLY_THRES]
     if (threshold) {
-      suggScoreThreshold = parseFloat(threshold)
+      faqSuggReplyThreshold = parseFloat(threshold)
     } else {
-      suggScoreThreshold = DEFAULT_SUGGSCORE_THRESHOLD
+      faqSuggReplyThreshold = DEFAULT_WCP_FAQ_SUGGREPLY_THRES
     }
   }
 
@@ -51,7 +51,7 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
     if (!clientId) {
       throw new Error(`
       Wechaty Chatopera Plugin requires ClientId for authorization.
-      Please set ${CHATOPERA_CLIENTID} environment variable,
+      Please set ${WCP_DEFAULT_CLIENTID} environment variable,
       or set 'clientId' in plugin config.
     `)
     }
@@ -59,18 +59,29 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
     if (!secret) {
       throw new Error(`
       Wechaty Chatopera Plugin requires Chatopera Secret.
-      Please set ${CHATOPERA_SECRET} environment variable,
+      Please set ${WCP_DEFAULT_SECRET} environment variable,
       or set 'secret' in plugin config.
     `)
+    }
+
+    console.log("PLUGIN>> Chatopera default BOT credentials are set.")
+  } else {
+    if(process.env[WCP_PERSONAL_ACC_TOKEN]){
+      console.log("PLUGIN>> Chatopera Personal Access Token is set, would load bots per room for multi tenants.")
+    }
+    if(clientId && secret){
+      console.log("PLUGIN>> Chatopera default BOT credentials are set.")
+    } else {
+      console.log("PLUGIN>> WARN Chatopera default BOT credentials are not set.")
     }
   }
 
   return {
-    bestScoreThreshold,
+    faqBestReplyThreshold,
     clientId,
     language,
     secret,
-    suggScoreThreshold,
+    faqSuggReplyThreshold,
   }
 
 }

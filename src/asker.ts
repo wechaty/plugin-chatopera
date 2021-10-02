@@ -23,7 +23,7 @@ async function initBot (repoConfig?: RepoConfig) {
 
   if (token) {
     const chatopera = new Chatopera(token)
-    const resp = await chatopera.command('GET', '/chatbot?limit=1000')
+    const resp = await chatopera.command('GET', '/chatbot?limit=9999')
     if (repoConfig && resp.rc === 0) {
       const bots: { clientId: string; name: string; secret: string }[] = resp.data
       for (const fullName in repoConfig) {
@@ -36,7 +36,7 @@ async function initBot (repoConfig?: RepoConfig) {
             logo: '',
             name: botName,
             primaryLanguage: 'zh_CN',
-            trans_zhCN_ZhTw2ZhCn: false,
+            trans_zhCN_ZhTw2ZhCn: true,
           })
 
           if (createBotRes.rc === 0) {
@@ -90,8 +90,8 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
       contactId = `${await room.topic()}`
     }
     const cmdRes = await chatbot.command('POST', '/conversation/query', {
-      faqBestReplyThreshold: options.bestScoreThreshold,
-      faqSuggReplyThreshold: options.suggScoreThreshold,
+      faqBestReplyThreshold: options.faqBestReplyThreshold,
+      faqSuggReplyThreshold: options.faqSuggReplyThreshold,
       fromUserId           : contactId,
       textMessage          : question,
     })

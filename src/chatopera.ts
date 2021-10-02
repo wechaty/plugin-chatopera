@@ -7,8 +7,8 @@ export interface RepoConfig {
 export interface ChatoperaOptions {
   clientId?          : string,
   secret?            : string,
-  bestScoreThreshold: number,
-  suggScoreThreshold: number,
+  faqBestReplyThreshold: number,
+  faqSuggReplyThreshold: number,
   language?         : matchers.LanguageMatcherOptions,
 }
 
@@ -34,10 +34,10 @@ export interface ChatoperaFaqResponse {
   replies: [],
 }
 
-const DEFAULT_BESTSCORE_THRESHOLD = 0.8
-const DEFAULT_SUGGSCORE_THRESHOLD = 0.2
+const DEFAULT_WCP_FAQ_BESTREPLY_THRES = 0.8
+const DEFAULT_WCP_FAQ_SUGGREPLY_THRES = 0.2
 
 export {
-  DEFAULT_BESTSCORE_THRESHOLD,
-  DEFAULT_SUGGSCORE_THRESHOLD,
+  DEFAULT_WCP_FAQ_BESTREPLY_THRES,
+  DEFAULT_WCP_FAQ_SUGGREPLY_THRES,
 }
