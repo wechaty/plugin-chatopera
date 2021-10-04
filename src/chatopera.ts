@@ -7,6 +7,7 @@ export interface RepoConfig {
 export interface ChatoperaOptions {
   clientId?          : string,
   secret?            : string,
+  personalAccessToken? : string,
   faqBestReplyThreshold: number,
   faqSuggReplyThreshold: number,
   language?         : matchers.LanguageMatcherOptions,

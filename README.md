@@ -31,8 +31,10 @@ const config = {
    */
   clientId: "YOUR_CLIENTID",
   secret: "YOUR_SECRET",
+  personalAccessToken: "YOUR_PERSONAL_ACCESS_TOKEN",
   faqBestReplyThreshold: 0.8,
   faqSuggReplyThreshold: 0.2
+  repoConfig: {}
 };
 
 const ChatoperaPlugin = WechatyChatopera(config);
@@ -40,6 +42,14 @@ const ChatoperaPlugin = WechatyChatopera(config);
 const wechaty = new Wechaty();
 wechaty.use(ChatoperaPlugin);
 ```
+
+In `config`, either {`personalAccessToken`, `repoConfig`} or {`clientId`, `secret`} must be present. 
+
+Chatopera BOT of `clientId` would response as the global bot for all groups and private chats.
+
+When `personalAccessToken` and `repoConfig` are added, the rooms defined by repoConfig would response with the bot that mapping with names. Check out [apache.ts](https://github.com/kaiyuanshe/osschat/blob/main/src/config-projects/apache.ts) and [asker.ts](https://github.com/wechaty/wechaty-chatopera/blob/0b59ec4dc90787718722c19340c978f33def3762/src/asker.ts#L66) to learn the `repoConfig` schema. Rooms are not belong to any repo, it would route to `clientId` BOT.
+
+If both `personalAccessToken` and `clientId` are not present, Wechaty Chatopera Plugin would throw an error.
 
 ### 1 Configure Chatopera
 

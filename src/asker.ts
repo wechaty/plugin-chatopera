@@ -1,13 +1,13 @@
 import {
   log,
   Room,
-}               from 'wechaty'
+} from 'wechaty'
 
 import {
   RepoConfig,
   ChatoperaOptions,
   ChatoperaResponse,
-}               from './chatopera'
+} from './chatopera'
 
 const { Chatbot, Chatopera } = require('@chatopera/sdk')
 
@@ -17,9 +17,9 @@ interface RoomBotConfig {
   secret: string;
 }
 
-async function initBot (repoConfig?: RepoConfig) {
+async function initBot(defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
   const result: RoomBotConfig[] = []
-  const token = process.env['CHATOPERA_PERSONAL_ACC_TOKEN']
+  const token = defaultOptions?.personalAccessToken
 
   if (token) {
     const chatopera = new Chatopera(token)
@@ -50,7 +50,7 @@ async function initBot (repoConfig?: RepoConfig) {
         }
 
         if (targetBot) {
-          const options =  targetBot
+          const options = targetBot
           roomId.forEach((r) => result.push({ roomId: r, ...options }))
         }
       }
@@ -60,12 +60,12 @@ async function initBot (repoConfig?: RepoConfig) {
   return result
 }
 
-function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
+function asker(defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
   log.verbose('WechatyChatopera', 'asker(%s)', JSON.stringify(defaultOptions))
 
-  const botPromise = initBot(repoConfig)
+  const botPromise = initBot(defaultOptions, repoConfig)
 
-  const findOption = async (roomId?:string) : Promise<ChatoperaOptions> =>  {
+  const findOption = async (roomId?: string): Promise<ChatoperaOptions> => {
     const botList = await botPromise
     const targetBot = botList.find((b) => b.roomId === roomId)
 
@@ -76,14 +76,18 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     }
   }
 
-  return async function ask (
-    question   : string,
-    contactId  : string,
-    room? : Room,
+  return async function ask(
+    question: string,
+    contactId: string,
+    room?: Room,
   ): Promise<ChatoperaResponse> {
     log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, room)
 
     const options = await findOption(room?.id)
+    if (options.clientId && options.secret) {
+      return { state: "", string: "", logic_is_unexpected: true, logic_is_fallback: true, botName: "", service: { provider: "BOT_NOT_DEF" } }
+    }
+
     const chatbot = new Chatbot(options.clientId, options.secret)
 
     if (room) {
@@ -92,8 +96,8 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     const cmdRes = await chatbot.command('POST', '/conversation/query', {
       faqBestReplyThreshold: options.faqBestReplyThreshold,
       faqSuggReplyThreshold: options.faqSuggReplyThreshold,
-      fromUserId           : contactId,
-      textMessage          : question,
+      fromUserId: contactId,
+      textMessage: question,
     })
     return cmdRes.data as ChatoperaResponse
   }

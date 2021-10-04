@@ -133,13 +133,10 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const room: Room = message.room()
 
       const response: ChatoperaResponse = await ask(text, from.id, room)
-      if (!response) {
+      if ((!response) || (!response.string)) {
         return
       }
 
-      /**
-       * TODO: should be tested under more complex mode
-       */
       log.info(`getting chatopera answer:${JSON.stringify(response)}`)
       let answer: string = ''
 
