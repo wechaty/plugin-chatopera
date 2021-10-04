@@ -19,7 +19,7 @@ interface RoomBotConfig {
 
 async function initBot (repoConfig?: RepoConfig) {
   const result: RoomBotConfig[] = []
-  const token = process.env['WCP_PERSONAL_ACC_TOKEN']
+  const token = process.env['CHATOPERA_PERSONAL_ACC_TOKEN']
 
   if (token) {
     const chatopera = new Chatopera(token)
