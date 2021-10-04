@@ -10,7 +10,7 @@
 
 Bring your bots into Wechat with Wechaty Chatopera Plugin.
 
-![](./docs/assets/1.png)
+![img](./docs/assets/1.png)
 
 ## REQUIREMENTS
 
@@ -44,7 +44,7 @@ const wechaty = new Wechaty();
 wechaty.use(ChatoperaPlugin);
 ```
 
-In `config`, either {`personalAccessToken`, `repoConfig`} or {`clientId`, `secret`} must be present. 
+In `config`, either {`personalAccessToken`, `repoConfig`} or {`clientId`, `secret`} must be present.
 
 Chatopera BOT of `clientId` would response as the global bot for all groups and private chats.
 
