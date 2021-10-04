@@ -85,15 +85,19 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
 
     const options = await findOption(room?.id)
     if (!(options.clientId && options.secret)) {
-      return { botName: '',  logic_is_fallback: true,  logic_is_unexpected: true,  service: { provider: 'BOT_NOT_DEF' }, state: '', string: '' }
+      return { botName: '', logic_is_fallback: true, logic_is_unexpected: true, service: { provider: 'BOT_NOT_DEF' }, state: '', string: '' }
     }
 
     const chatbot = new Chatbot(options.clientId, options.secret)
+    const extras = { room: false, username: '' }
 
     if (room) {
+      extras.username = contactId
+      extras.room = true
       contactId = `${await room.topic()}`
     }
     const cmdRes = await chatbot.command('POST', '/conversation/query', {
+      extras: extras,
       faqBestReplyThreshold: options.faqBestReplyThreshold,
       faqSuggReplyThreshold: options.faqSuggReplyThreshold,
       fromUserId: contactId,
