@@ -26,7 +26,7 @@ Bring your bots into Wechat with Wechaty Chatopera Plugin.
 To use the plugin:
 
 ```ts
-import { WechatyChatopera } from "wechaty-chatopera";
+import { WechatyChatopera } from "wechaty-chatopera"
 
 const config = {
   /**
@@ -38,12 +38,12 @@ const config = {
   faqBestReplyThreshold: 0.8,
   faqSuggReplyThreshold: 0.2
   repoConfig: {}
-};
+}
 
-const ChatoperaPlugin = WechatyChatopera(config);
+const ChatoperaPlugin = WechatyChatopera(config)
 
-const wechaty = new Wechaty();
-wechaty.use(ChatoperaPlugin);
+const wechaty = new Wechaty()
+wechaty.use(ChatoperaPlugin)
 ```
 
 In `config`, either {`personalAccessToken`, `repoConfig`} or {`clientId`, `secret`} must be present.
