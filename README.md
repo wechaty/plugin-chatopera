@@ -6,6 +6,8 @@
 
 # WECHATY-CHATOPERA
 
+[![ES Modules](https://img.shields.io/badge/ES-Modules-brightgreen)](https://github.com/Chatie/tsconfig/issues/16)
+
 ## INTRODUCTION
 
 Bring your bots into Wechat with Wechaty Chatopera Plugin.
