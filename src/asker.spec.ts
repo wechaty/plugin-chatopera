@@ -17,3 +17,5 @@
 //   answers = await ask('中文', 'test-user-id')
 //   t.equal(answers.length, 0, 'should get no answer for 中文')
 // })
+
+export {}
