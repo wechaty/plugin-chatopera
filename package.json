@@ -1,6 +1,6 @@
 {
   "name": "wechaty-chatopera",
-  "version": "0.3.4",
+  "version": "0.3.6",
   "description": "Chatopera Plugin for Wechaty, deliver chatbots in low-code way. <https://bot.chatopera.com>",
   "directories": {
     "doc": "docs",
@@ -23,8 +23,8 @@
     "shx": "^0.3.2",
     "tstest": "^0.4.10",
     "wechaty": "^0.50.5",
-    "wechaty-vorpal": "^0.6.11",
-    "wechaty-puppet-mock": "^0.28.2"
+    "wechaty-puppet-mock": "^0.28.2",
+    "wechaty-vorpal": "^0.6.11"
   },
   "main": "dist/src/mod.js",
   "typings": "dist/src/mod.d.ts",

@@ -84,7 +84,7 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, room)
 
     const options = await findOption(room?.id)
-    if (options.clientId && options.secret) {
+    if (!(options.clientId && options.secret)) {
       return { botName: '',  logic_is_fallback: true,  logic_is_unexpected: true,  service: { provider: 'BOT_NOT_DEF' }, state: '', string: '' }
     }
 
