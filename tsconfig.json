@@ -2,6 +2,7 @@
   "extends": "@chatie/tsconfig",
   "compilerOptions": {
     "outDir": "dist",
+    "allowSyntheticDefaultImports": true,
   },
   "exclude": [
     "node_modules/",

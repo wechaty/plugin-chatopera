@@ -1,4 +1,4 @@
-import { WechatyChatoperaConfig }  from './plugin.js'
+import type { WechatyChatoperaConfig }  from './plugin.js'
 import {
   ChatoperaOptions,
   DEFAULT_CHATOPERA_FAQ_BESTREPLY_THRES,

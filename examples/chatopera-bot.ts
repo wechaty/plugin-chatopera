@@ -46,7 +46,7 @@ const bot = new Wechaty({
    *  https://github.com/wechaty/wechaty-puppet/wiki/Directory
    */
 
-  puppet: 'wechaty-puppet-hostie',
+  puppet: 'wechaty-puppet-service',
 })
 
 const chatoperaConfig: WechatyChatoperaConfig = {

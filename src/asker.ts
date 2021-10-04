@@ -30,7 +30,7 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
     if (repoConfig && resp.rc === 0) {
       const bots: { clientId: string; name: string; secret: string }[] = resp.data
       for (const fullName in repoConfig) {
-        const owner = fullName.split('/')[0]
+        const owner = fullName.split('/')[0] || 'NOOWNER'
         const botName = `osschat_${owner.toLowerCase()}_bot`
         let targetBot = bots.find((b) => b.name === botName)
         if (!targetBot) {
@@ -47,7 +47,7 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
           }
         }
 
-        let roomId = repoConfig[fullName]
+        let roomId = repoConfig[fullName]!
         if (!Array.isArray(roomId)) {
           roomId = [roomId]
         }

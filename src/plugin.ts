@@ -14,7 +14,11 @@ import { asker }            from './asker.js'
 import { normalizeConfig }  from './normalize-config.js'
 import { mentionMatcher }        from './mention-matcher.js'
 
-import { RepoConfig, ChatoperaOptions, ChatoperaResponse } from './chatopera.js'
+import type {
+  RepoConfig,
+  ChatoperaOptions,
+  ChatoperaResponse,
+}                           from './chatopera.js'
 
 interface WechatyChatoperaConfigMatcher {
   contact?        : matchers.ContactMatcherOptions,
@@ -33,7 +37,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
 
   const roomIds: string[] = []
   for (const fullName in config.repoConfig) {
-    const repoRoom: string | string[] = config.repoConfig[fullName]
+    const repoRoom: string | string[] = config.repoConfig[fullName] || []
     if (Array.isArray(repoRoom)) {
       roomIds.push(...repoRoom)
     } else {
