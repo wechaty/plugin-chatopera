@@ -14,9 +14,10 @@ Bring your bots into Wechat with Wechaty Chatopera Plugin.
 
 ## REQUIREMENTS
 
-1. Node.js v12+
-2. Wechaty v0.40+
-3. Chatopera Plugin
+1. Node.js v16+
+2. NPM v7+
+3. Wechaty v0.68+
+4. Chatopera Plugin
 
 ## USAGE
 
