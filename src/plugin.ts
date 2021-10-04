@@ -132,7 +132,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const from: Contact = message.talker()
       const room: Room = message.room()
 
-      const response: ChatoperaResponse = await ask(text, from.id, room)
+      const response: ChatoperaResponse = await ask(text, from.name(), room)
       if ((!response) || (!response.string)) {
         return
       }
