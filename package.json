@@ -10,11 +10,7 @@
   "dependencies": {
     "@chatopera/sdk": "^2.5.5",
     "language-monitor": "^1.0.3",
-    "wechaty-plugin-contrib": "^0.14.2",
-    "wechaty-puppet-hostie": "^0.10.8"
-  },
-  "peerDependencies": {
-    "wechaty-vorpal": "*"
+    "wechaty-plugin-contrib": "^0.14.2"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^0.12.1",
