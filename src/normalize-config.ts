@@ -9,9 +9,9 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
 
   const language = config.language
 
-  let clientId = config.clientId
-  let secret   = config.secret
-  let personalAccessToken = config.personalAccessToken
+  const clientId = config.clientId
+  const secret   = config.secret
+  const personalAccessToken = config.personalAccessToken
   let faqBestReplyThreshold = config.faqBestReplyThreshold
   let faqSuggReplyThreshold = config.faqSuggReplyThreshold
 
@@ -37,23 +37,25 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
     `)
     }
 
-    console.log("PLUGIN>> Chatopera default BOT credentials are set.")
+    /* eslint-disable no-console */
+    console.log('PLUGIN>> Chatopera default BOT credentials are set.')
   } else {
-    console.log("PLUGIN>> Chatopera Personal Access Token is set, would load bots per room for multi tenants.")
-    if(clientId && secret){
-      console.log("PLUGIN>> Chatopera default BOT credentials are set.")
+    console.log('PLUGIN>> Chatopera Personal Access Token is set, would load bots per room for multi tenants.')
+    if (clientId && secret) {
+      console.log('PLUGIN>> Chatopera default BOT credentials are set.')
     } else {
-      console.log("PLUGIN>> WARN Chatopera default BOT credentials are not set.")
+      console.log('PLUGIN>> WARN Chatopera default BOT credentials are not set.')
     }
+    /* eslint-enable no-console */
   }
 
   return {
     clientId,
-    secret,
-    personalAccessToken,
-    language,
-    faqSuggReplyThreshold,
     faqBestReplyThreshold,
+    faqSuggReplyThreshold,
+    language,
+    personalAccessToken,
+    secret,
   }
 
 }

@@ -17,7 +17,7 @@ interface RoomBotConfig {
   secret: string;
 }
 
-async function initBot(defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
+async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
   const result: RoomBotConfig[] = []
   const token = defaultOptions?.personalAccessToken
 
@@ -60,7 +60,7 @@ async function initBot(defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfi
   return result
 }
 
-function asker(defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
+function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
   log.verbose('WechatyChatopera', 'asker(%s)', JSON.stringify(defaultOptions))
 
   const botPromise = initBot(defaultOptions, repoConfig)
@@ -76,7 +76,7 @@ function asker(defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     }
   }
 
-  return async function ask(
+  return async function ask (
     question: string,
     contactId: string,
     room?: Room,
@@ -85,7 +85,7 @@ function asker(defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
 
     const options = await findOption(room?.id)
     if (options.clientId && options.secret) {
-      return { state: "", string: "", logic_is_unexpected: true, logic_is_fallback: true, botName: "", service: { provider: "BOT_NOT_DEF" } }
+      return { botName: '',  logic_is_fallback: true,  logic_is_unexpected: true,  service: { provider: 'BOT_NOT_DEF' }, state: '', string: '' }
     }
 
     const chatbot = new Chatbot(options.clientId, options.secret)
