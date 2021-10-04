@@ -9,7 +9,7 @@ import {
   log,
 }               from 'wechaty'
 
-import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod'
+import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod.js'
 
 function onLogin (user: Contact) {
   log.info('Login %s', user)

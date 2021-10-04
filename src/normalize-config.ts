@@ -1,9 +1,9 @@
-import { WechatyChatoperaConfig }  from './plugin'
+import { WechatyChatoperaConfig }  from './plugin.js'
 import {
   ChatoperaOptions,
   DEFAULT_CHATOPERA_FAQ_BESTREPLY_THRES,
   DEFAULT_CHATOPERA_FAQ_SUGGREPLY_THRES,
-}                                 from './chatopera'
+}                                 from './chatopera.js'
 
 function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
 

@@ -1,5 +1,5 @@
-export { VERSION } from './version'
+export { VERSION } from './config.js'
 export {
   WechatyChatopera,
   WechatyChatoperaConfig,
-}                           from './plugin'
+}                           from './plugin.js'

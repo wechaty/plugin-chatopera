@@ -8,9 +8,9 @@
 //   matchers,
 // }                    from 'wechaty-plugin-contrib'
 
-// import { ChatoperaOptions } from './chatopera'
-// import { normalizeConfig } from './normalize-config'
-// import { asker }           from './asker'
+// import { ChatoperaOptions } from './chatopera.js'
+// import { normalizeConfig } from './normalize-config.js'
+// import { asker }           from './asker.js'
 // import {
 //   QnASearchResult,
 //   QueryDTO,

@@ -10,11 +10,11 @@ import {
   matchers,
 }                   from 'wechaty-plugin-contrib'
 
-import { asker }            from './asker'
-import { normalizeConfig }  from './normalize-config'
-import { mentionMatcher }        from './mention-matcher'
+import { asker }            from './asker.js'
+import { normalizeConfig }  from './normalize-config.js'
+import { mentionMatcher }        from './mention-matcher.js'
 
-import { RepoConfig, ChatoperaOptions, ChatoperaResponse } from './chatopera'
+import { RepoConfig, ChatoperaOptions, ChatoperaResponse } from './chatopera.js'
 
 interface WechatyChatoperaConfigMatcher {
   contact?        : matchers.ContactMatcherOptions,

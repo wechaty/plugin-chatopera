@@ -2,8 +2,8 @@
 
 // import test  from 'tstest'
 
-// import { asker } from './asker'
-// import { normalizeConfig } from './normalize-config'
+// import { asker } from './asker.js'
+// import { normalizeConfig } from './normalize-config.js'
 
 // test('asker()', async t => {
 //   // use our normalizeConfig() helper function to get the config:

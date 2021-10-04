@@ -3,13 +3,16 @@ import {
   Room,
 } from 'wechaty'
 
-import {
+import type {
   RepoConfig,
   ChatoperaOptions,
   ChatoperaResponse,
-} from './chatopera'
+}                       from './chatopera.js'
 
-const { Chatbot, Chatopera } = require('@chatopera/sdk')
+import {
+  Chatbot,
+  Chatopera,
+}               from '@chatopera/sdk'
 
 interface RoomBotConfig {
   roomId: string;
