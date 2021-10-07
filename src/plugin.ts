@@ -29,8 +29,6 @@ export type WechatyChatoperaConfig = WechatyChatoperaConfigMatcher &
   };
 
 function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
-  log.verbose('WechatyChatopera', 'WechatyChatopera(%s)', JSON.stringify(config))
-
   const roomIds: string[] = []
   for (const fullName in config.repoConfig) {
     const repoRoom: string | string[] = config.repoConfig[fullName]
@@ -145,7 +143,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       }
 
       if (!answer) {
-        log.warn('no answer from chatopera')
+        log.info('No answer from chatopera')
         return
       }
 

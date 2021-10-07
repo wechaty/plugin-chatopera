@@ -17,8 +17,17 @@ interface RoomBotConfig {
   secret: string;
 }
 
+/**
+ * capitalize the first letter
+ * @param t target string
+ * @returns
+ */
+function capitalize (t: string) {
+  return t.charAt(0).toUpperCase() + t.slice(1)
+}
+
 async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
-  log.verbose('WechatyChatopera', 'initBot ...')
+  log.verbose('WechatyChatopera', 'init Bots on start ...')
   const result: RoomBotConfig[] = []
   const token = defaultOptions?.personalAccessToken
 
@@ -28,14 +37,15 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
     if (repoConfig && resp.rc === 0) {
       const bots: { clientId: string; name: string; secret: string }[] = resp.data
       for (const fullName in repoConfig) {
-        log.verbose('WechatyChatopera', 'check bot for %s', fullName)
-        const owner = fullName.split('/')[0]
-        const botName = `osschat_${owner.toLowerCase()}_bot`
+        const splits = fullName.split('/')
+        const owner = splits[0]
+        const repoName = splits[1]
+        const botName = `OSSChat${capitalize(owner.toLowerCase())}${capitalize(repoName.toLowerCase())}`
         let targetBot = bots.find((b) => b.name === botName)
         if (!targetBot) {
-          log.verbose('WechatyChatopera', 'create bot for %s as it does not exist.', owner)
+          log.verbose('WechatyChatopera', 'create bot for %s as it does not exist.', fullName)
           const createBotRes = await chatopera.command('POST', '/chatbot', {
-            description: 'osschat bot',
+            description: 'OSSChat BOT, OSSChat is for bridging IM apps (e.g., WeChat) and Apache community tools (e.g., mailing list, and jira).',
             logo: '',
             name: botName,
             primaryLanguage: 'zh_CN',
@@ -43,13 +53,13 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
           })
 
           if (createBotRes.rc === 0) {
-            log.verbose('WechatyChatopera', 'bot is created for %s(%s)', owner, botName)
+            log.verbose('WechatyChatopera', 'bot is created for %s(%s)', fullName, botName)
             targetBot = createBotRes.data
           } else {
-            log.verbose('WechatyChatopera', 'fail to create bot for %s, response %s', owner, JSON.stringify(createBotRes))
+            log.verbose('WechatyChatopera', 'fail to create bot for %s, response %s', fullName, JSON.stringify(createBotRes))
           }
         } else {
-          log.verbose('WechatyChatopera', 'existed bot for %s(%s)', owner, botName)
+          log.verbose('WechatyChatopera', 'existed bot for %s(%s)', fullName, botName)
         }
 
         let roomId = repoConfig[fullName]
