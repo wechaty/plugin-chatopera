@@ -18,6 +18,7 @@ interface RoomBotConfig {
 }
 
 async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
+  log.verbose('WechatyChatopera', 'initBot ...')
   const result: RoomBotConfig[] = []
   const token = defaultOptions?.personalAccessToken
 
@@ -27,10 +28,12 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
     if (repoConfig && resp.rc === 0) {
       const bots: { clientId: string; name: string; secret: string }[] = resp.data
       for (const fullName in repoConfig) {
+        log.verbose('WechatyChatopera', 'check bot for %s', fullName)
         const owner = fullName.split('/')[0]
         const botName = `osschat_${owner.toLowerCase()}_bot`
         let targetBot = bots.find((b) => b.name === botName)
         if (!targetBot) {
+          log.verbose('WechatyChatopera', 'create bot for %s as it does not exist.', owner)
           const createBotRes = await chatopera.command('POST', '/chatbot', {
             description: 'osschat bot',
             logo: '',
@@ -40,8 +43,13 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
           })
 
           if (createBotRes.rc === 0) {
+            log.verbose('WechatyChatopera', 'bot is created for %s(%s)', owner, botName)
             targetBot = createBotRes.data
+          } else {
+            log.verbose('WechatyChatopera', 'fail to create bot for %s, response %s', owner, JSON.stringify(createBotRes))
           }
+        } else {
+          log.verbose('WechatyChatopera', 'existed bot for %s(%s)', owner, botName)
         }
 
         let roomId = repoConfig[fullName]
