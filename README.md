@@ -121,6 +121,13 @@ If both `personalAccessToken` and `clientId` are not present, Wechaty Chatopera 
 
 ## ENVIRONMENT VARIABLES
 
+## CONTR
+
+```bash
+npm run dist
+npm publish
+```
+
 ## HISTORY
 
 ### develop
