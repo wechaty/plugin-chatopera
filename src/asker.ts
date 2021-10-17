@@ -9,16 +9,21 @@ import type {
   ChatoperaResponse,
 }                       from './chatopera.js'
 
-import {
-  Chatbot,
-  Chatopera,
-}               from '@chatopera/sdk'
+import chatoperaSdk from '@chatopera/sdk'
 
 interface RoomBotConfig {
   roomId: string;
   name: string;
   secret: string;
 }
+
+const {
+  Chatopera,
+  Chatbot,
+} = chatoperaSdk as {
+  Chatopera: any,
+  Chatbot: any,
+} // Issue #8 - https://github.com/wechaty/wechaty-chatopera/pull/8#issuecomment-945093665
 
 /**
  * capitalize the first letter
@@ -42,7 +47,7 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
       for (const fullName in repoConfig) {
         const splits = fullName.split('/')
         const owner = splits[0] || 'NOOWNER'
-        const repoName = splits[1]
+        const repoName = splits[1] || 'NOREPO'
         const botName = `OSSChat${capitalize(owner.toLowerCase())}${capitalize(repoName.toLowerCase())}`
         let targetBot = bots.find((b) => b.name === botName)
         if (!targetBot) {
