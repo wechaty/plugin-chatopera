@@ -5,7 +5,7 @@ import {
 }                     from 'wechaty-chatopera'
 
 async function main () {
-  const ChatoperaPlugin = WechatyChatopera()
+  const ChatoperaPlugin = WechatyChatopera({} as any)
   void ChatoperaPlugin
 
   if (VERSION === '0.0.0') {
