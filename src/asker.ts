@@ -106,7 +106,7 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     question: string,
     contactId: string,
     room?: Room,
-  ): Promise<ChatoperaResponse> {
+  ): Promise<undefined | ChatoperaResponse> {
     log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, room)
 
     const options = await findOption(room?.id)

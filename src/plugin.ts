@@ -3,8 +3,6 @@ import {
   WechatyPlugin,
   log,
   Message,
-  Contact,
-  Room,
 }                   from 'wechaty'
 import {
   matchers,
@@ -17,7 +15,6 @@ import { mentionMatcher }        from './mention-matcher.js'
 import type {
   RepoConfig,
   ChatoperaOptions,
-  ChatoperaResponse,
 }                           from './chatopera.js'
 
 interface WechatyChatoperaConfigMatcher {
@@ -115,7 +112,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   return function WechatyChatoperaPlugin (wechaty: Wechaty) {
     log.verbose('WechatyChatopera', 'WechatyChatoperaPlugin(%s)', wechaty)
 
-    wechaty.on('message', async message => {
+    wechaty.on('message', async (message: Message) => {
       log.verbose('WechatyChatopera', 'WechatyChatoperaPlugin() wechaty.on(message) %s', message)
 
       if (!await isPluginMessage(message)) {
@@ -131,11 +128,14 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const text = await message.mentionText()
       if (!text) { return }
 
-      const talker: Contact = message.talker()
-      const room: Room      = message.room()
+      const talker = message.talker()
+      const room   = message.room()
 
-      const response: undefined | ChatoperaResponse = await ask(text, talker.name(), room)
-      if ((!response) || (!response.string)) {
+      const response = await ask(text, talker.name(), (room || undefined))
+      if (!response) {
+        return
+      }
+      if (!response.string) {
         return
       }
 
