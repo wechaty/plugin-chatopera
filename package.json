@@ -16,25 +16,25 @@
     "wechaty": ">=0.69"
   },
   "dependencies": {
-    "@chatopera/sdk": "^2.5.5",
+    "@chatopera/sdk": "^2.7.9",
     "language-monitor": "^1.0.3"
   },
   "peerDependencies": {
-    "wechaty-plugin-contrib": ">=0.14.2"
+    "wechaty-plugin-contrib": "^0.17.2"
   },
   "devDependencies": {
-    "@chatie/eslint-config": "^0.14.1",
+    "@chatie/eslint-config": "^0.16.2",
     "@chatie/git-scripts": "^0.6.2",
     "@chatie/semver": "^0.4.7",
-    "@chatie/tsconfig": "^0.20.2",
-    "@types/body-parser": "^1.19.0",
-    "@types/express": "^4.17.6",
+    "@chatie/tsconfig": "^0.20.6",
+    "@types/body-parser": "^1.19.1",
+    "@types/express": "^4.17.13",
     "cross-env": "^7.0.3",
     "npm-run-all": "^4.1.5",
-    "pkg-jq": "^0.2.4",
-    "shx": "^0.3.2",
+    "pkg-jq": "^0.2.11",
+    "shx": "^0.3.3",
     "tstest": "^0.7.3",
-    "typescript": "^4.4.3",
+    "typescript": "^4.4.4",
     "wechaty": "^0.73.9",
     "wechaty-puppet-mock": "^0.31.6",
     "wechaty-vorpal": "^0.7.4"

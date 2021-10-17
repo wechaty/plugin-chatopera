@@ -4,9 +4,10 @@ import {
   VERSION,
 }                     from 'wechaty-chatopera'
 
+import assert from 'assert'
+
 async function main () {
-  const ChatoperaPlugin = WechatyChatopera({} as any)
-  void ChatoperaPlugin
+  assert(typeof WechatyChatopera === 'function', 'plugin should be function')
 
   if (VERSION === '0.0.0') {
     throw new Error('version should be set before publishing')
