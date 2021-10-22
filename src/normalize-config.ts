@@ -52,6 +52,7 @@ function normalizeConfig (config: WechatyChatoperaConfig): ChatoperaOptions {
   return {
     clientId,
     faqBestReplyThreshold,
+    faqPath: config.faqPath,
     faqSuggReplyThreshold,
     language,
     personalAccessToken,
