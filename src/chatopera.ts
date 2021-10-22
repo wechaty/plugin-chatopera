@@ -11,6 +11,7 @@ export interface ChatoperaOptions {
   faqBestReplyThreshold: number,
   faqSuggReplyThreshold: number,
   language?         : matchers.LanguageMatcherOptions,
+  faqPath?          : string,
 }
 
 /* eslint-disable camelcase */

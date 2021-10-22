@@ -1,6 +1,6 @@
 {
   "name": "wechaty-chatopera",
-  "version": "0.3.11",
+  "version": "0.4.0",
   "description": "Chatopera Plugin for Wechaty, deliver chatbots in low-code way. <https://bot.chatopera.com>",
   "directories": {
     "doc": "docs",
@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "dependencies": {
-    "@chatopera/sdk": "^2.5.5",
+    "@chatopera/sdk": "^2.8.0",
     "language-monitor": "^1.0.3",
     "wechaty-plugin-contrib": "^0.14.2"
   },

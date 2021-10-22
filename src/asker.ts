@@ -9,13 +9,42 @@ import {
   ChatoperaResponse,
 } from './chatopera'
 
+import {
+  md5,
+} from './utils'
+
+import fs from 'fs'
+import path from 'path'
+
 const { Chatbot, Chatopera } = require('@chatopera/sdk')
+
+const OSSCHAT_FAQ_HASH = 'OSSCHAT_FAQ_HASH'
 
 interface RoomBotConfig {
   roomId: string;
   name: string;
+  clientId: string;
   secret: string;
 }
+
+ interface FaqAnswer {
+   rtype: string
+   content: string
+   enabled: boolean
+ }
+
+ interface FaqItem {
+   id?: string
+   post: string
+   categories: string
+   replies: FaqAnswer[]
+   extends: string[]
+   enabled: boolean
+ }
+
+ interface FaqData {
+   [fullName: string]: FaqItem[]
+ }
 
 /**
  * capitalize the first letter
@@ -24,6 +53,141 @@ interface RoomBotConfig {
  */
 function capitalize (t: string) {
   return t.charAt(0).toUpperCase() + t.slice(1)
+}
+
+function generateBoName (fullName: string): string {
+  const splits = fullName.split('/')
+  const owner = splits[0]
+  const repoName = splits[1]
+  const botName = `OSSChat${capitalize(owner.toLowerCase())}${capitalize(
+    repoName.toLowerCase()
+  )}`
+  return botName
+}
+
+function getCommand (clientId: string, secret: string): CommandFn {
+  const chatbot = new Chatbot(clientId, secret)
+
+  return (...args: any[]) =>
+    chatbot.command(...args).then((res: any) => {
+      if (res.rc === 0) {
+        return res
+      } else {
+        throw new Error(res.error)
+      }
+    })
+}
+
+type CommandFn = (...args: any[]) => Promise<any>
+
+async function initBotFaq (
+  faqRoot: string,
+  botPromise: Promise<RoomBotConfig[]>
+): Promise<void> {
+  const bots = await botPromise
+  if (fs.existsSync(faqRoot)) {
+    const fileNames = fs.readdirSync(faqRoot)
+    for (const name of fileNames) {
+      if (/\.faqs\.yml$/.test(name)) {
+        const faqPath = path.join(faqRoot, name)
+        const faqYaml = fs.readFileSync(faqPath, 'utf-8')
+        const faqHash = md5(faqYaml)
+        const faqData = Chatopera.utils.mapFaqFromYaml(faqYaml) as FaqData
+        for (const fullName in faqData) {
+          const botName = generateBoName(fullName)
+          const targetBot = bots.find((b) => b.name === botName)
+          if (targetBot) {
+            const command = getCommand(targetBot.clientId, targetBot.secret)
+            const newFaqs = faqData[fullName]
+            const { data: oldFaqs }: { data: FaqItem[] } = await command(
+              'GET',
+              '/faq/database?limit=9999'
+            )
+
+            const hashVersion = oldFaqs.find((p) => p.post === OSSCHAT_FAQ_HASH)
+            if (hashVersion) {
+              const { data }: { data: FaqItem } = await command(
+                'GET',
+                `/faq/database/${hashVersion.id}`
+              )
+              if (data?.replies[0].content === faqHash) {
+                continue
+              }
+            }
+
+            for (const faq of newFaqs) {
+              faq.enabled = true
+              const questionId = await updateQuestion(oldFaqs.find((p) => p.post === faq.post), command, faq)
+              await updateQuestionExtends(command, questionId, faq)
+            }
+
+            await updateFaqVersion(hashVersion, command, faqHash)
+          }
+        }
+      }
+    }
+  }
+
+  async function updateQuestionExtends (
+    command: CommandFn,
+    questionId: string,
+    faq: FaqItem
+  ) {
+    const postExtends = faq.extends || []
+    const extendPath = `/faq/database/${questionId}/extend`
+    const { data } = await command('GET', extendPath)
+    for (const oldExtend of data) {
+      await command('DELETE', `${extendPath}/${oldExtend.id}`)
+    }
+
+    for (const newExtend of postExtends) {
+      await command('POST', extendPath, { post: newExtend })
+    }
+  }
+
+  async function updateQuestion (oldItem: FaqItem | undefined, command: CommandFn, faq: FaqItem) : Promise<string> {
+    if (oldItem?.id) {
+      const { data } = await command('GET', `/faq/database/${oldItem.id}`)
+      const replyLastUpdate = data?.replyLastUpdate
+      await command('PUT', `/faq/database/${oldItem.id}`, {
+        ...faq,
+        replyLastUpdate,
+      })
+      return oldItem.id
+    } else {
+      const { data } = await command('POST', '/faq/database', faq)
+      return data.id
+    }
+  }
+
+  async function updateFaqVersion (hashVersion: FaqItem | undefined, command: CommandFn, faqHash: string) {
+    if (hashVersion) {
+      const { data } = await command('GET', `/faq/database/${hashVersion.id}`)
+      const replyLastUpdate = data?.replyLastUpdate
+      await command('PUT', `/faq/database/${hashVersion.id}`, {
+        post: OSSCHAT_FAQ_HASH,
+        replies: [
+          {
+            content: faqHash,
+            enabled: true,
+            rtype: 'plain',
+          },
+        ],
+        replyLastUpdate,
+      })
+    } else {
+      await command('POST', '/faq/database', {
+        post: OSSCHAT_FAQ_HASH,
+        replies: [
+          {
+            content: faqHash,
+            enabled: true,
+            rtype: 'plain',
+          },
+        ],
+      })
+    }
+  }
 }
 
 async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConfig) {
@@ -37,10 +201,7 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
     if (repoConfig && resp.rc === 0) {
       const bots: { clientId: string; name: string; secret: string }[] = resp.data
       for (const fullName in repoConfig) {
-        const splits = fullName.split('/')
-        const owner = splits[0]
-        const repoName = splits[1]
-        const botName = `OSSChat${capitalize(owner.toLowerCase())}${capitalize(repoName.toLowerCase())}`
+        const botName = generateBoName(fullName)
         let targetBot = bots.find((b) => b.name === botName)
         if (!targetBot) {
           log.verbose('WechatyChatopera', 'create bot for %s as it does not exist.', fullName)
@@ -82,6 +243,12 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
   log.verbose('WechatyChatopera', 'asker(%s)', JSON.stringify(defaultOptions))
 
   const botPromise = initBot(defaultOptions, repoConfig)
+
+  if (defaultOptions.faqPath) {
+    initBotFaq(defaultOptions.faqPath, botPromise).catch((err) => {
+      log.error('WechatyChatopera', 'init bot faq fail', err)
+    })
+  }
 
   const findOption = async (roomId?: string): Promise<ChatoperaOptions> => {
     const botList = await botPromise
