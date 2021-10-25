@@ -38,7 +38,7 @@ interface RoomBotConfig {
    post: string
    categories: string
    replies: FaqAnswer[]
-   extends: string[]
+   extends?: string[]
    enabled: boolean
  }
 
