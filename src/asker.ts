@@ -65,6 +65,8 @@ function generateBoName (fullName: string): string {
   return botName
 }
 
+type CommandFn = (...args: any[]) => Promise<any>
+
 function getCommand (clientId: string, secret: string): CommandFn {
   const chatbot = new Chatbot(clientId, secret)
 
@@ -77,8 +79,6 @@ function getCommand (clientId: string, secret: string): CommandFn {
       }
     })
 }
-
-type CommandFn = (...args: any[]) => Promise<any>
 
 async function initBotFaq (
   faqRoot: string,
