@@ -9,7 +9,7 @@ import {
   log,
 }               from 'wechaty'
 
-import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod'
+import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod.js'
 
 function onLogin (user: Contact) {
   log.info('Login %s', user)
@@ -46,7 +46,7 @@ const bot = new Wechaty({
    *  https://github.com/wechaty/wechaty-puppet/wiki/Directory
    */
 
-  puppet: 'wechaty-puppet-hostie',
+  puppet: 'wechaty-puppet-service',
 })
 
 const chatoperaConfig: WechatyChatoperaConfig = {

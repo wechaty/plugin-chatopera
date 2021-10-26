@@ -6,6 +6,8 @@
 
 # WECHATY-CHATOPERA
 
+[![ES Modules](https://img.shields.io/badge/ES-Modules-brightgreen)](https://github.com/Chatie/tsconfig/issues/16)
+
 ## INTRODUCTION
 
 Bring your bots into Wechat with Wechaty Chatopera Plugin.
@@ -24,24 +26,24 @@ Bring your bots into Wechat with Wechaty Chatopera Plugin.
 To use the plugin:
 
 ```ts
-import { WechatyChatopera } from "wechaty-chatopera";
+import { WechatyChatopera } from 'wechaty-chatopera'
 
 const config = {
   /**
    * Chatopera Service ID
    */
-  clientId: "YOUR_CLIENTID",
-  secret: "YOUR_SECRET",
-  personalAccessToken: "YOUR_PERSONAL_ACCESS_TOKEN",
+  clientId: 'YOUR_CLIENTID',
+  secret: 'YOUR_SECRET',
+  personalAccessToken: 'YOUR_PERSONAL_ACCESS_TOKEN',
   faqBestReplyThreshold: 0.8,
   faqSuggReplyThreshold: 0.2
   repoConfig: {}
-};
+}
 
-const ChatoperaPlugin = WechatyChatopera(config);
+const ChatoperaPlugin = WechatyChatopera(config)
 
-const wechaty = new Wechaty();
-wechaty.use(ChatoperaPlugin);
+const wechaty = new Wechaty()
+wechaty.use(ChatoperaPlugin)
 ```
 
 In `config`, either {`personalAccessToken`, `repoConfig`} or {`clientId`, `secret`} must be present.

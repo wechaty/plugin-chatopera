@@ -1,9 +1,9 @@
-// #!/usr/bin/env ts-node
+// #!/usr/bin/env -S node --no-warnings --loader ts-node/esm
 
 // import test  from 'tstest'
 
-// import { asker } from './asker'
-// import { normalizeConfig } from './normalize-config'
+// import { asker } from './asker.js'
+// import { normalizeConfig } from './normalize-config.js'
 
 // test('asker()', async t => {
 //   // use our normalizeConfig() helper function to get the config:
@@ -17,3 +17,5 @@
 //   answers = await ask('中文', 'test-user-id')
 //   t.equal(answers.length, 0, 'should get no answer for 中文')
 // })
+
+export {}

@@ -3,18 +3,19 @@ import {
   WechatyPlugin,
   log,
   Message,
-  Contact,
-  Room,
 }                   from 'wechaty'
 import {
   matchers,
 }                   from 'wechaty-plugin-contrib'
 
-import { asker }            from './asker'
-import { normalizeConfig }  from './normalize-config'
-import { mentionMatcher }        from './mention-matcher'
+import { asker }            from './asker.js'
+import { normalizeConfig }  from './normalize-config.js'
+import { mentionMatcher }        from './mention-matcher.js'
 
-import { RepoConfig, ChatoperaOptions, ChatoperaResponse } from './chatopera'
+import type {
+  RepoConfig,
+  ChatoperaOptions,
+}                           from './chatopera.js'
 
 interface WechatyChatoperaConfigMatcher {
   contact?        : matchers.ContactMatcherOptions,
@@ -31,7 +32,7 @@ export type WechatyChatoperaConfig = WechatyChatoperaConfigMatcher &
 function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   const roomIds: string[] = []
   for (const fullName in config.repoConfig) {
-    const repoRoom: string | string[] = config.repoConfig[fullName]
+    const repoRoom: string | string[] = config.repoConfig[fullName] || []
     if (Array.isArray(repoRoom)) {
       roomIds.push(...repoRoom)
     } else {
@@ -80,8 +81,8 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   }
 
   const isConfigMessage = async (message: Message): Promise<boolean> => {
-    const from = message.talker()
-    const room = message.room()
+    const talker  = message.talker()
+    const room    = message.room()
 
     if (await matchSkipMessage(message))                  { return false }
 
@@ -96,7 +97,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const mentionSelf = await message.mentionSelf()
       if (mentionList.length > 0 && !mentionSelf)         { return false }
     } else {
-      if (from && !await matchContact(from))              { return false }
+      if (!await matchContact(talker))              { return false }
     }
 
     const text = await message.mentionText()
@@ -111,7 +112,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
   return function WechatyChatoperaPlugin (wechaty: Wechaty) {
     log.verbose('WechatyChatopera', 'WechatyChatoperaPlugin(%s)', wechaty)
 
-    wechaty.on('message', async message => {
+    wechaty.on('message', async (message: Message) => {
       log.verbose('WechatyChatopera', 'WechatyChatoperaPlugin() wechaty.on(message) %s', message)
 
       if (!await isPluginMessage(message)) {
@@ -127,11 +128,14 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
       const text = await message.mentionText()
       if (!text) { return }
 
-      const from: Contact = message.talker()
-      const room: Room = message.room()
+      const talker = message.talker()
+      const room   = message.room()
 
-      const response: ChatoperaResponse = await ask(text, from.name(), room)
-      if ((!response) || (!response.string)) {
+      const response = await ask(text, talker.name(), (room || undefined))
+      if (!response) {
+        return
+      }
+      if (!response.string) {
         return
       }
 
@@ -147,8 +151,8 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
         return
       }
 
-      if (from && room && await message.mentionSelf()) {
-        await room.say(answer, from)
+      if (room && await message.mentionSelf()) {
+        await room.say(answer, talker)
       } else {
         await message.say(answer)
       }

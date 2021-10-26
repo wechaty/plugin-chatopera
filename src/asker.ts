@@ -3,11 +3,11 @@ import {
   Room,
 } from 'wechaty'
 
-import {
+import type {
   RepoConfig,
   ChatoperaOptions,
   ChatoperaResponse,
-} from './chatopera'
+}                       from './chatopera.js'
 
 import {
   md5,
@@ -16,7 +16,7 @@ import {
 import fs from 'fs'
 import path from 'path'
 
-const { Chatbot, Chatopera } = require('@chatopera/sdk')
+import chatoperaSdk from '@chatopera/sdk'
 
 const OSSCHAT_FAQ_HASH = 'OSSCHAT_FAQ_HASH'
 
@@ -27,24 +27,32 @@ interface RoomBotConfig {
   secret: string;
 }
 
- interface FaqAnswer {
+const {
+  Chatopera,
+  Chatbot,
+} = chatoperaSdk as {
+  Chatopera: any,
+  Chatbot: any,
+} // Issue #8 - https://github.com/wechaty/wechaty-chatopera/pull/8#issuecomment-945093665
+
+interface FaqAnswer {
    rtype: string
    content: string
    enabled: boolean
  }
 
- interface FaqItem {
-   id?: string
-   post: string
-   categories: string
-   replies: FaqAnswer[]
-   extends?: string[]
-   enabled: boolean
- }
+interface FaqItem {
+  id?: string
+  post: string
+  categories: string
+  replies: FaqAnswer[]
+  extends?: string[]
+  enabled: boolean
+}
 
- interface FaqData {
-   [fullName: string]: FaqItem[]
- }
+interface FaqData {
+  [fullName: string]: FaqItem[]
+}
 
 /**
  * capitalize the first letter
@@ -223,7 +231,7 @@ async function initBot (defaultOptions?: ChatoperaOptions, repoConfig?: RepoConf
           log.verbose('WechatyChatopera', 'existed bot for %s(%s)', fullName, botName)
         }
 
-        let roomId = repoConfig[fullName]
+        let roomId = repoConfig[fullName]!
         if (!Array.isArray(roomId)) {
           roomId = [roomId]
         }
@@ -265,7 +273,7 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
     question: string,
     contactId: string,
     room?: Room,
-  ): Promise<ChatoperaResponse> {
+  ): Promise<undefined | ChatoperaResponse> {
     log.verbose('WechatyChatopera', 'ask(%s, %s, %s)', question, contactId, room)
 
     const options = await findOption(room?.id)

@@ -2,46 +2,54 @@
   "name": "wechaty-chatopera",
   "version": "0.4.1",
   "description": "Chatopera Plugin for Wechaty, deliver chatbots in low-code way. <https://bot.chatopera.com>",
-  "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "tests"
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/src/mod.js",
+      "require": "./dist/cjs/src/mod.js"
+    }
+  },
+  "typings": "./dist/esm/src/mod.d.ts",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=7",
+    "wechaty": ">=0.77"
   },
   "dependencies": {
     "@chatopera/sdk": "^2.8.0",
     "language-monitor": "^1.0.3",
-    "wechaty-plugin-contrib": "^0.14.2"
+    "wechaty-plugin-contrib": "^0.17.2"
   },
   "devDependencies": {
-    "@chatie/eslint-config": "^0.12.1",
+    "@chatie/eslint-config": "^0.16.2",
     "@chatie/git-scripts": "^0.6.2",
     "@chatie/semver": "^0.4.7",
-    "@chatie/tsconfig": "^0.10.1",
-    "@types/body-parser": "^1.19.0",
-    "@types/express": "^4.17.6",
-    "pkg-jq": "^0.2.4",
-    "shx": "^0.3.2",
-    "tstest": "^0.4.10",
-    "wechaty": "^0.50.5",
-    "wechaty-puppet-mock": "^0.28.2",
-    "wechaty-vorpal": "^0.6.11"
+    "@chatie/tsconfig": "^0.20.6",
+    "@types/body-parser": "^1.19.1",
+    "@types/express": "^4.17.13",
+    "cross-env": "^7.0.3",
+    "npm-run-all": "^4.1.5",
+    "pkg-jq": "^0.2.11",
+    "shx": "^0.3.3",
+    "tstest": "^0.7.3",
+    "typescript": "^4.4.4",
+    "wechaty": "^0.77",
+    "wechaty-puppet-mock": "^0.35"
   },
-  "main": "dist/src/mod.js",
-  "typings": "dist/src/mod.d.ts",
   "scripts": {
+    "build": "tsc && tsc -p tsconfig.cjs.json",
     "clean": "shx rm -fr dist/*",
-    "dist": "npm run clean && tsc",
-    "pack": "npm pack",
-    "lint": "npm run lint:es && npm run lint:ts && npm run lint:md",
+    "dist": "npm-run-all clean build dist:commonjs",
+    "dist:commonjs": "jq -n \"{ type: \\\"commonjs\\\" }\" > dist/cjs/package.json",
+    "lint": "npm-run-all lint:es lint:ts lint:md",
     "lint:md": "markdownlint README.md",
-    "lint:ts": "tsc --noEmit",
-    "example": "ts-node examples/ding-dong-bot.ts",
+    "lint:ts": "tsc --isolatedModules --noEmit",
+    "example": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" node examples/ding-dong-bot.ts",
     "start": "npm run example",
-    "test": "npm run lint && npm run test:unit",
+    "test": "npm-run-all lint test:unit",
     "test:pack": "bash -x scripts/npm-pack-testing.sh",
-    "test:unit": "blue-tape -r ts-node/register \"src/**/*.spec.ts\" \"src/*.spec.ts\" \"tests/*.spec.ts\" \"tests/**/*.spec.ts\"",
-    "lint:es": "eslint  --fix --ignore-pattern tests/fixtures/ \"{bin,examples,scripts,src,tests}/**/*.ts\"",
-    "prepublish": "npm run dist"
+    "test:unit": "cross-env NODE_OPTIONS=\"--no-warnings --loader=ts-node/esm\" tap \"src/**/*.spec.ts\" \"tests/**/*.spec.ts\"",
+    "lint:es": "eslint --fix --ignore-pattern tests/fixtures/ \"{bin,examples,scripts,src,tests}/**/*.ts\""
   },
   "repository": {
     "type": "git",
@@ -77,6 +85,9 @@
     "dist/",
     "src/"
   ],
+  "tap": {
+    "check-coverage": false
+  },
   "publishConfig": {
     "tag": "next"
   },
