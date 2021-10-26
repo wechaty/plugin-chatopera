@@ -129,6 +129,13 @@ async function initBotFaq (
               await updateQuestionExtends(command, questionId, faq)
             }
 
+            for (const faq of oldFaqs) {
+              const isRemoveFaq = !newFaqs.find((p) => p.post === faq.post)
+              if (isRemoveFaq) {
+                await command('DELETE', `/faq/database/${faq.id}`)
+              }
+            }
+
             await updateFaqVersion(hashVersion, command, faqHash)
           }
         }
