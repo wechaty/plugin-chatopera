@@ -4,12 +4,15 @@
  */
 import {
   Contact,
-  Message,
-  Wechaty,
   log,
-}               from 'wechaty'
+  Message,
+  WechatyBuilder,
+}                   from 'wechaty'
 
-import { WechatyChatoperaConfig, WechatyChatopera } from '../src/mod.js'
+import {
+  WechatyChatoperaConfig,
+  WechatyChatopera,
+}                           from '../src/mod.js'
 
 function onLogin (user: Contact) {
   log.info('Login %s', user)
@@ -26,35 +29,16 @@ async function onMessage (msg: Message) {
   }
 }
 
-const bot = new Wechaty({
+const bot = WechatyBuilder.build({
   name: 'ding-dong-bot',
-  /**
-   * To use different puppets(which are control different underlying protocols, like Web/Pad/Mac/Windows, etc)
-   * with Wechaty, you have two ways:
-   *  1. Specify a `puppet` option when instantiating Wechaty. (like `{ puppet: 'wechaty-puppet-hostie' }`)
-   *  1. Set the `WECHATY_PUPPET` environment variable to the puppet NPM module name. (like `wechaty-puppet-hostie`)
-   *
-   * You can use the following providers:
-   *  - wechaty-puppet-hostie
-   *  - wechaty-puppet-puppeteer
-   *  - etc.
-   *
-   * Learn more about Wechaty Puppet Providers at:
-   *  https://github.com/wechaty/puppet-service-providers
-   *
-   * Learn more about Wechaty Puppet at:
-   *  https://github.com/wechaty/wechaty-puppet/wiki/Directory
-   */
-
-  puppet: 'wechaty-puppet-service',
 })
 
 const chatoperaConfig: WechatyChatoperaConfig = {
   clientId: '5fbcb0afcad362001b4e3b12',
   secret  : 'c03e26976ac9aed372953b48f55d09f9',
 }
-
 bot.use(WechatyChatopera(chatoperaConfig))
+
 bot.on('login',   onLogin)
 bot.on('logout',  onLogout)
 bot.on('message', onMessage)

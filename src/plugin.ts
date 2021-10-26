@@ -3,6 +3,7 @@ import {
   WechatyPlugin,
   log,
   Message,
+  type,
 }                   from 'wechaty'
 import {
   matchers,
@@ -70,7 +71,7 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
 
   const isPluginMessage = async (message: Message): Promise<boolean> => {
     if (message.self())                       { return false }
-    if (message.type() !== Message.Type.Text) { return false }
+    if (message.type() !== type.Message.Text) { return false }
 
     const mentionList = await message.mentionList()
     if (mentionList.length > 0) {
