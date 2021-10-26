@@ -65,10 +65,10 @@ function capitalize (t: string) {
 
 function generateBoName (fullName: string): string {
   const splits = fullName.split('/')
-  const owner = splits[0]
-  const repoName = splits[1]
+  const owner = splits[0]!
+  const repoName = splits[1]!
   const botName = `OSSChat${capitalize(owner.toLowerCase())}${capitalize(
-    repoName.toLowerCase()
+    repoName.toLowerCase(),
   )}`
   return botName
 }
@@ -90,7 +90,7 @@ function getCommand (clientId: string, secret: string): CommandFn {
 
 async function initBotFaq (
   faqRoot: string,
-  botPromise: Promise<RoomBotConfig[]>
+  botPromise: Promise<RoomBotConfig[]>,
 ): Promise<void> {
   const bots = await botPromise
   if (fs.existsSync(faqRoot)) {
@@ -106,19 +106,19 @@ async function initBotFaq (
           const targetBot = bots.find((b) => b.name === botName)
           if (targetBot) {
             const command = getCommand(targetBot.clientId, targetBot.secret)
-            const newFaqs = faqData[fullName]
+            const newFaqs = faqData[fullName]!
             const { data: oldFaqs }: { data: FaqItem[] } = await command(
               'GET',
-              '/faq/database?limit=9999'
+              '/faq/database?limit=9999',
             )
 
             const hashVersion = oldFaqs.find((p) => p.post === OSSCHAT_FAQ_HASH)
             if (hashVersion) {
               const { data }: { data: FaqItem } = await command(
                 'GET',
-                `/faq/database/${hashVersion.id}`
+                `/faq/database/${hashVersion.id}`,
               )
-              if (data?.replies[0].content === faqHash) {
+              if (data.replies[0]!.content === faqHash) {
                 continue
               }
             }
@@ -139,7 +139,7 @@ async function initBotFaq (
   async function updateQuestionExtends (
     command: CommandFn,
     questionId: string,
-    faq: FaqItem
+    faq: FaqItem,
   ) {
     const postExtends = faq.extends || []
     const extendPath = `/faq/database/${questionId}/extend`
