@@ -11,7 +11,7 @@ import type {
 
 import {
   md5,
-} from './utils'
+} from './utils.js'
 
 import fs from 'fs'
 import path from 'path'
