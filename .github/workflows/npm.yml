@@ -23,7 +23,9 @@ jobs:
           cache-dependency-path: package.json
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install wechaty-plugin-contrib@0.14
 
       - name: Test
         run: npm test
@@ -41,7 +43,9 @@ jobs:
           cache-dependency-path: package.json
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install wechaty-plugin-contrib@0.14
 
       - name: Generate Package JSON
         run: ./scripts/generate-package-json.sh
@@ -66,7 +70,9 @@ jobs:
           cache-dependency-path: package.json
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install wechaty-plugin-contrib@0.14
 
       - name: Generate Package JSON
         run: ./scripts/generate-package-json.sh
