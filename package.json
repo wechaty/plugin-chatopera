@@ -17,8 +17,10 @@
   },
   "dependencies": {
     "@chatopera/sdk": "^2.8.0",
-    "language-monitor": "^1.0.3",
-    "wechaty-plugin-contrib": "^1.0.10"
+    "language-monitor": "^1.0.3"
+  },
+  "peerDependencies": {
+    "wechaty-plugin-contrib": "*"
   },
   "devDependencies": {
     "@chatie/eslint-config": "^1.0.2",
