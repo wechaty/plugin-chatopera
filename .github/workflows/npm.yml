@@ -25,7 +25,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm install wechaty-plugin-contrib@0.14
 
       - name: Test
         run: npm test
@@ -45,7 +44,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm install wechaty-plugin-contrib@0.14
 
       - name: Generate Package JSON
         run: ./scripts/generate-package-json.sh
@@ -72,7 +70,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm install wechaty-plugin-contrib@0.14
 
       - name: Generate Package JSON
         run: ./scripts/generate-package-json.sh

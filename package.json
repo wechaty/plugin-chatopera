@@ -30,6 +30,7 @@
     "@types/express": "^4.17.13",
     "file-box": "^1.2.4",
     "wechaty": "^0.68",
+    "wechaty-plugin-contrib": "^0.14",
     "wechaty-puppet": "^0.41.9"
   },
   "scripts": {
