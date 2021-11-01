@@ -25,6 +25,7 @@ npm init -y
 npm install --production ./*-*.*.*.tgz \
   @chatie/tsconfig@$NPM_TAG \
   pkg-jq \
+  hot-import \
   "wechaty@$NPM_TAG" \
 
 #
