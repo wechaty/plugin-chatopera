@@ -6,7 +6,7 @@ import {
   Contact,
   log,
   Message,
-  WechatyBuilder,
+  Wechaty,
 }                   from 'wechaty'
 
 import {
@@ -29,7 +29,7 @@ async function onMessage (msg: Message) {
   }
 }
 
-const bot = WechatyBuilder.build({
+const bot = Wechaty.instance({
   name: 'ding-dong-bot',
 })
 
