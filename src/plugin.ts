@@ -70,7 +70,10 @@ function WechatyChatopera (config: WechatyChatoperaConfig): WechatyPlugin {
 
   const isPluginMessage = async (message: Message): Promise<boolean> => {
     if (message.self())                       { return false }
-    if (message.type() !== Message.Type.Text) { return false }
+    // Huan(202111): FIXME: use magic number here because we have to compatible between wechaty@0.x & wechaty@1.x. my fault.
+    //    Text        = 7,    // Text(1)
+    // @see https://github.com/wechaty/puppet/issues/170
+    if (message.type() !== 7) { return false }
 
     const mentionList = await message.mentionList()
     if (mentionList.length > 0) {

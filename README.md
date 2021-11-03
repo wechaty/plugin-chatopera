@@ -132,7 +132,9 @@ npm publish
 
 ## HISTORY
 
-### develop
+### develop v1.0 (Nov 3, 2021)
+
+Release v1.0 of Wechaty Chatopera Plugin.
 
 ### v0.1 (Nov 24, 2020)
 
