@@ -83,6 +83,11 @@ function getCommand (clientId: string, secret: string): CommandFn {
       if (res.rc === 0) {
         return res
       } else {
+        let error = res.error
+        if (typeof error !== 'string') {
+          error = JSON.stringify(error, null, 2)
+        }
+
         throw new Error(res.error)
       }
     })
@@ -97,47 +102,57 @@ async function initBotFaq (
     const fileNames = fs.readdirSync(faqRoot)
     for (const name of fileNames) {
       if (/\.faqs\.yml$/.test(name)) {
-        const faqPath = path.join(faqRoot, name)
-        const faqYaml = fs.readFileSync(faqPath, 'utf-8')
-        const faqHash = md5(faqYaml)
-        const faqData = Chatopera.utils.mapFaqFromYaml(faqYaml) as FaqData
-        for (const fullName in faqData) {
-          const botName = generateBoName(fullName)
-          const targetBot = bots.find((b) => b.name === botName)
-          if (targetBot) {
-            const command = getCommand(targetBot.clientId, targetBot.secret)
-            const newFaqs = faqData[fullName]!
-            const { data: oldFaqs }: { data: FaqItem[] } = await command(
-              'GET',
-              '/faq/database?limit=9999',
-            )
-
-            const hashVersion = oldFaqs.find((p) => p.post === OSSCHAT_FAQ_HASH)
-            if (hashVersion) {
-              const { data }: { data: FaqItem } = await command(
+        try {
+          const faqPath = path.join(faqRoot, name)
+          const faqYaml = fs.readFileSync(faqPath, 'utf-8')
+          const faqHash = md5(faqYaml)
+          const faqData = Chatopera.utils.mapFaqFromYaml(faqYaml) as FaqData
+          for (const fullName in faqData) {
+            const botName = generateBoName(fullName)
+            const targetBot = bots.find((b) => b.name === botName)
+            if (targetBot) {
+              const command = getCommand(targetBot.clientId, targetBot.secret)
+              const newFaqs = faqData[fullName]!
+              const { data: oldFaqs }: { data: FaqItem[] } = await command(
                 'GET',
-                `/faq/database/${hashVersion.id}`,
+                '/faq/database?limit=9999',
               )
-              if (data.replies[0]!.content === faqHash) {
-                continue
+
+              const hashVersion = oldFaqs.find((p) => p.post === OSSCHAT_FAQ_HASH)
+              if (hashVersion) {
+                const { data }: { data: FaqItem } = await command(
+                  'GET',
+                  `/faq/database/${hashVersion.id}`,
+                )
+                if (data.replies[0]!.content === faqHash) {
+                  continue
+                }
               }
-            }
 
-            for (const faq of newFaqs) {
-              faq.enabled = true
-              const questionId = await updateQuestion(oldFaqs.find((p) => p.post === faq.post), command, faq)
-              await updateQuestionExtends(command, questionId, faq)
-            }
-
-            for (const faq of oldFaqs) {
-              const isRemoveFaq = !(newFaqs.find((p) => p.post === faq.post) || faq.post === OSSCHAT_FAQ_HASH)
-              if (isRemoveFaq) {
-                await command('DELETE', `/faq/database/${faq.id}`)
+              for (const faq of newFaqs) {
+                faq.enabled = true
+                const questionId = await updateQuestion(oldFaqs.find((p) => p.post === faq.post), command, faq)
+                await updateQuestionExtends(command, questionId, faq)
               }
-            }
 
-            await updateFaqVersion(hashVersion, command, faqHash)
+              for (const faq of oldFaqs) {
+                const isRemoveFaq = !(newFaqs.find((p) => p.post === faq.post) || faq.post === OSSCHAT_FAQ_HASH)
+                if (isRemoveFaq) {
+                  await command('DELETE', `/faq/database/${faq.id}`)
+                }
+              }
+
+              await updateFaqVersion(hashVersion, command, faqHash)
+            }
           }
+
+        } catch (err) {
+          log.error(
+            'WechatyChatopera',
+            'import faq yaml %s error: %s',
+            name,
+            err,
+          )
         }
       }
     }
@@ -261,7 +276,7 @@ function asker (defaultOptions: ChatoperaOptions, repoConfig?: RepoConfig) {
 
   if (defaultOptions.faqPath) {
     initBotFaq(defaultOptions.faqPath, botPromise).catch((err) => {
-      log.error('WechatyChatopera', 'init bot faq fail', err)
+      log.error('WechatyChatopera', 'init bot faq fail: %s', err)
     })
   }
 
